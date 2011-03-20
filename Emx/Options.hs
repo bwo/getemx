@@ -1,3 +1,4 @@
+{-# LANGUAGE NoMonomorphismRestriction #-}
 module Emx.Options where
 import System.IO 
 import System.FilePath
@@ -44,17 +45,13 @@ subfromstring s = go s []
 (Right default_dlf) = subfromstring "%(a)/%(A)/%(a) - %(A) - %(n) - %(t)"
 (Right default_dlfm) = subfromstring "%(a)/%(A): %(D)/%(a) - %(A): %(D) - %(n) - %(t)"
 
-strip s remove = stripped
-    where
-      (_,rest) = span (`elem` remove) s
-      (stripped,_) = break (`elem` remove) rest
+strip rem = reverse.snd.span (`elem` rem).reverse.snd.span (`elem` rem)
 split s splite = (before, after)
     where
       (before,rest) = break (==splite) s
       (_,after) = span (==splite) rest
-stripw = (`strip` " \t\n")
+stripw = strip " \t\n"
 
-optline :: Options -> String -> Either String Options
 optline o line = ps (stripw s) (stripw e)
     where
       (s,e) = split line '='
@@ -73,10 +70,9 @@ optline o line = ps (stripw s) (stripw e)
           | v `elem` ["f", "false"] = return $ u False
           | v `elem` ["t", "true"]  = return $ u True
           | otherwise = throwError $ "Boolean values must be one of 'f', 't', 'true', and 'false', not `"++v++"\', in option "++oname
-      sconv u on v = catchError (fmap u (subfromstring v))
+      sconv u on v = catchError (u `liftM` (subfromstring v))
                      (\t -> throwError $ t++" (error in option \""++on++"\")")
 
---readopts :: IO Options
 readopts = do
   dotfile <- fmap (</> ".emxdownloader") getHomeDirectory
   h <- openFile dotfile ReadMode
