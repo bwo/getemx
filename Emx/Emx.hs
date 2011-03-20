@@ -87,7 +87,8 @@ collect repu repapo = atTag "PACKAGE" >>> (tagtext "ACTION" &&& tagtext "EXP_DAT
 parseXML = readDocument [withValidate False]
 
 readfile f repu repapo = do
-  [r] <- liftIO $ runX (parseXML f >>> (collect repu repapo))
+  r <- liftIO $ runX (parseXML f >>> (collect repu repapo))
   case r of 
-    Right s -> return s
-    Left e -> throwError e
+    [] -> throwError $ "Couldn't parse emx file "++f++" at all!"
+    [Right s] -> return s
+    [Left e] -> throwError e
