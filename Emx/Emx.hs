@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -XArrows -XScopedTypeVariables -XNamedFieldPuns #-}
+{-# LANGUAGE Arrows, ScopedTypeVariables, NamedFieldPuns #-}
 
 module Emx.Emx where
 
@@ -15,12 +15,12 @@ text = getChildren >>> getText
 opttagtext :: (ArrowXml a) => String -> a XmlTree String
 opttagtext = (<<<) text . atTag
 
-tagtext t = (opttagtext t >>> arr Right) `orElse` (constA $ Left $  "Bad XML: couldn't find tag "++t)
+tagtext t = (opttagtext t >>> arr Right) `orElse` constA (Left $  "Bad XML: couldn't find tag "++t)
 
 replace::(Eq a) => [a] -> [a] -> [a] -> [a]
 replace [] newSub list = joins newSub list
 replace oldSub newSub list = _replace list where
-    _replace list@(h:ts) = if isPrefixOf oldSub list
+    _replace list@(h:ts) = if oldSub `isPrefixOf` list
                            then newSub ++ _replace (drop len list)
                            else h : _replace ts
     _replace [] = []
@@ -70,13 +70,13 @@ gettrack repu repapo = atTag "TRACK" >>>
       c = right $ arr $ clean repu repapo
       r t = arr $ \i -> do
               v <- i
-              case (reads v) of
+              case reads v of
                 [] -> throwError $ "Bad XML: couldn't parse int in tag "++t
                 [(x::Int,_)] -> return x
-      rtag t = (tagtext t) >>> (r t)
-      tr = right $ arr $ (take 2 . show)
+      rtag t = tagtext t >>> r t
+      tr = right $ arr (take 2 . show) -- bad assumption: < 100 tracks
 
-collect repu repapo = atTag "PACKAGE" >>> (tagtext "ACTION" &&& tagtext "EXP_DATE" &&& (listA $ gettrack repu repapo)) >>> arr f
+collect repu repapo = atTag "PACKAGE" >>> (tagtext "ACTION" &&& tagtext "EXP_DATE" &&& listA (gettrack repu repapo)) >>> arr f
     where
       f (action, (exp, tracks)) = do
         t <- sequence tracks
@@ -87,7 +87,7 @@ collect repu repapo = atTag "PACKAGE" >>> (tagtext "ACTION" &&& tagtext "EXP_DAT
 parseXML = readDocument [withValidate False]
 
 readfile f repu repapo = do
-  r <- liftIO $ runX (parseXML f >>> (collect repu repapo))
+  r <- liftIO $ runX (parseXML f >>> collect repu repapo)
   case r of 
     [] -> throwError $ "Couldn't parse emx file "++f++" at all!"
     [Right s] -> return s
