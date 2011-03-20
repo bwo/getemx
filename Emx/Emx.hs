@@ -1,7 +1,7 @@
 {-# LANGUAGE Arrows, ScopedTypeVariables, NamedFieldPuns #-}
 
 module Emx.Emx where
-
+import Control.Applicative
 import System.FilePath
 import Data.List (isPrefixOf)
 import Control.Monad.Error
@@ -37,35 +37,26 @@ clean repu repapo = pthc . uc . apoc
       uc = if repu then replace "_" " " else id
       apoc = if repapo then replace "&#039;" "'" else id
 
-mktrack a al e tc t d l au dc dn tn = do
-  artist <- a
-  album <- al
-  ext <- e
-  trackcount <- tc
-  title <- t
-  dlurl <- d
-  label <- l
-  arturl <- au
-  disccount <- dc
-  discnum <- dn
-  tracknum <- tn
-  return Tr {artist, album, ext, trackcount, title, dlurl, label, arturl,
-             disccount, discnum, tracknum}
+instance Applicative (Either a) where
+    pure = Right
+    (Right f) <*> (Right x) = Right $ f x
+    (Left f) <*> _ = Left f
+    _ <*> (Left x) = Left x
 
 gettrack repu repapo = atTag "TRACK" >>>
            (proc t -> do
-              artist <- c <<< tagtext "ARTIST" -< t
-              album <- c <<< tagtext "ALBUM"-< t
-              title <- c <<< tagtext "TITLE"-< t
+              ar <- c <<< tagtext "ARTIST" -< t
+              al <- c <<< tagtext "ALBUM"-< t
+              ti <- c <<< tagtext "TITLE"-< t
               ext <- tagtext "EXTENSION" -< t
-              dlurl <- tagtext "TRACKURL" -< t
-              label <- c <<< tagtext "LABEL" -< t
-              arturl <- tagtext "ALBUMART" -< t
-              disccount <- rtag "DISCCOUNT" -< t
-              discnum <- rtag "DISCNUM" -< t
+              url <- tagtext "TRACKURL" -< t
+              lbl <- c <<< tagtext "LABEL" -< t
+              art <- tagtext "ALBUMART" -< t
+              dc <- rtag "DISCCOUNT" -< t
+              dn <- rtag "DISCNUM" -< t
               tc <- rtag "TRACKCOUNT" -< t
-              tracknum <- tr <<< rtag "TRACKNUM" -< t
-              returnA -< mktrack artist album ext tc title dlurl label arturl disccount discnum tracknum)
+              tn <- tr <<< rtag "TRACKNUM" -< t
+              returnA -< Tr <$> ar <*> al <*> ti <*> ext <*> url <*> lbl <*> art <*> tn <*> dc <*> dn <*> tc)
     where
       c = right $ arr $ clean repu repapo
       r t = arr $ \i -> do
