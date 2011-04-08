@@ -19,6 +19,7 @@ lookupsub "d" = return $ IntSub discnum
 lookupsub "e" = return $ StrSub ext
 lookupsub "t" = return $ StrSub title
 lookupsub "l" = return $ StrSub label
+lookupsub "g" = return $ StrSub genre
 lookupsub "n" = return $ StrSub tracknum
 lookupsub x = throwError $ "Unrecognized format option: \""++x++"\""
 

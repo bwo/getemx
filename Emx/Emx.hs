@@ -55,8 +55,9 @@ gettrack repu repapo = atTag "TRACK" >>>
               dc <- rtag "DISCCOUNT" -< t
               dn <- rtag "DISCNUM" -< t
               tc <- rtag "TRACKCOUNT" -< t
+              gr <- tagtext "GENRE" -< t
               tn <- tr <<< rtag "TRACKNUM" -< t
-              returnA -< Tr <$> ar <*> al <*> ti <*> ext <*> url <*> lbl <*> art <*> tn <*> dc <*> dn <*> tc)
+              returnA -< Tr <$> ar <*> al <*> ti <*> ext <*> url <*> lbl <*> art <*> tn <*> gr <*> dc <*> dn <*> tc)
     where
       c = right $ arr $ clean repu repapo
       r t = arr $ \i -> do
