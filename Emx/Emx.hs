@@ -73,11 +73,7 @@ fill fille until s = if length s < until then fill fille until (fille:s)
 
 collect repu repapo = atTag "PACKAGE" >>> (tagtext "ACTION" &&& tagtext "EXP_DATE" &&& listA (gettrack repu repapo)) >>> arr f
     where
-      f (action, (exp, tracks)) = do
-        t <- sequence tracks
-        a <- action
-        e <- exp
-        return (a,e,t)
+      f (action, (exp, tracks)) = (,,) <$> action <*> exp <*> (sequence tracks)
 
 parseXML = readDocument [withValidate False]
 
