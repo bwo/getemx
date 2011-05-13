@@ -83,6 +83,6 @@ could look like this::
     replace_apostrophe_identity = t
     dldir = .
     dlfmt = %(a)/%(A)/%(a) - %(A) - %(n) - %(t)
-    dlfmt_multidisc = %(a)/%(A): %(D)/%(a) - %(A) - %(n) - %(t)
+    dlfmt_multidisc = %(a)/%(A): %(D)/%(a) - %(A): %(D) - %(n) - %(t)
 
 "Could" because one could also write "true" out in full for "t".
