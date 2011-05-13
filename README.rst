@@ -64,7 +64,7 @@ options:
 
 The defaults for the string options are:
 
-- **dldir**: ``.``, that is, whatever directory getemx is run from
+- **dldir**: ``.``
 - **dlfmt**: ``%(a)/%(A)/%(a) - %(A) - %(n) - %(t)``
 - **dlfmt_multidisc**: ``%(a)/%(A): %(D)/%(a) - %(A): %(D) - %(n) - %(t)``
 
