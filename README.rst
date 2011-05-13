@@ -54,15 +54,15 @@ options:
 ==============  ================================================
 Format string:  Replaced by:
 ==============  ================================================
-``%(a)``            Artist name
-``%(A)``            Album name
-``%(n)``            Track number
-``%(t)``            Track name
-``%(D)``            Total number of discs in set
-``%(d)``            Number of present disc in set (e.g. 2 out of 4)
-``%(l)``            Label
-``%(e)``           File extension
-``%(g)``            Genre
+``%(a)``        Artist name
+``%(A)``        Album name
+``%(n)``        Track number
+``%(t)``        Track name
+``%(D)``        Total number of discs in set
+``%(d)``        Number of present disc in set (e.g. 2 out of 4)
+``%(l)``        Label
+``%(e)``        File extension
+``%(g)``        Genre
 =============   ================================================
 
 The defaults for the string options are:
