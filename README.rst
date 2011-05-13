@@ -60,7 +60,7 @@ Format string Replaced by
 ``%(l)``      Label
 ``%(e)``      File extension
 ``%(g)``      Genre
-============= ===========
+============= ============
 
 The defaults for the string options are:
 
