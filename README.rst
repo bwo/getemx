@@ -51,9 +51,9 @@ while **dlfmt** and **dlfmt_multidisc** specify how to process
 *individual files*. The latter two accept a number of replacement
 options:
 
-==============  ================================================
+==============  ============
 Format string:  Replaced by:
-==============  ================================================
+==============  ============
 ``%(a)``        Artist name
 ``%(A)``        Album name
 ``%(n)``        Track number
@@ -63,7 +63,7 @@ Format string:  Replaced by:
 ``%(l)``        Label
 ``%(e)``        File extension
 ``%(g)``        Genre
-=============   ================================================
+=============   ============
 
 The defaults for the string options are:
 
