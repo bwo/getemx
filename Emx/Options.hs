@@ -76,8 +76,12 @@ optline o line = ps (stripw s) (stripw e)
 
 readopts = do
   dotfile <- fmap (</> ".emxdownloader") getHomeDirectory
-  h <- openFile dotfile ReadMode
-  contents <- fmap lines $ hGetContents h
   curdir <- getCurrentDirectory
   let default_options = Opt True True True curdir default_dlf default_dlfm
-  return (foldM optline default_options contents)
+  exists <- doesFileExist dotfile
+  if exists 
+     then do
+       h <- openFile dotfile ReadMode
+       contents <- fmap lines $ hGetContents h
+       return (foldM optline default_options contents)
+     else return $ return default_options
