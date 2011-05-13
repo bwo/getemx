@@ -48,19 +48,19 @@ while **dlfmt** and **dlfmt_multidisc** specify how to process
 *individual files*. The latter two accept a number of replacement
 options:
 
-=============  ============
-Format string  Replaced by
-=============  ============
-``%(a)``       Artist name
-``%(A)``       Album name
-``%(n)``       Track number
-``%(t)``       Track name
-``%(D)``       Total number of discs in set
-``%(d)``       Number of present disc in set (e.g. 2 out of 4)
-``%(l)``       Label
-``%(e)``       File extension
-``%(g)``       Genre
-============   ============
+============= ============
+Format string Replaced by
+============= ============
+``%(a)``      Artist name
+``%(A)``      Album name
+``%(n)``      Track number
+``%(t)``      Track name
+``%(D)``      Total number of discs in set
+``%(d)``      Number of present disc in set (e.g. 2 out of 4)
+``%(l)``      Label
+``%(e)``      File extension
+``%(g)``      Genre
+============= ===========
 
 The defaults for the string options are:
 
