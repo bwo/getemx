@@ -31,7 +31,7 @@ subfromstring s = go s []
         (kind, rest) <- return $ break (==')') cs
         when (null rest) $ throwError $ "Unclosed parenthesis in option string \""++s++"\""
         sub <- lookupsub kind
-        go rest (sub:a)
+        go (tail rest) (sub:a)
       go ('%':'%':cs) as = 
           case as of
             Txt s:r -> go cs ((Txt $ s++"%"):r)

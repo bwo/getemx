@@ -66,7 +66,10 @@ gettrack repu repapo = atTag "TRACK" >>>
                 [] -> throwError $ "Bad XML: couldn't parse int in tag "++t
                 [(x::Int,_)] -> return x
       rtag t = tagtext t >>> r t
-      tr = right $ arr (take 2 . show) -- bad assumption: < 100 tracks
+      tr = right $ arr (fill '0' 2 . show) -- bad assumption: < 100 tracks
+
+fill fille until s = if length s < until then fill fille until (fille:s)
+                     else s
 
 collect repu repapo = atTag "PACKAGE" >>> (tagtext "ACTION" &&& tagtext "EXP_DATE" &&& listA (gettrack repu repapo)) >>> arr f
     where
