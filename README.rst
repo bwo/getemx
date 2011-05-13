@@ -1,0 +1,91 @@
+======
+GETEMX
+======
+
+getemx reads the .emx files used by `Emusic
+<http://www.emusic.com>`_ and downloads the files they describe. Its
+behavior is controlled by the file ~/.emxdownloader, which contains
+instructions for file naming, art downloading, etc (see below in
+`Invocation`_). It downloads files using either wget, curl, or
+Haskell's interface to libcurl (though I would be surprised if anyone
+who had libcurl installed didn't also have the curl binary).
+
+Building & Installation
+=======================
+
+It should be possible to build and install getemx using `cabal
+<http://www.haskell.org/cabal>`_.
+
+Invocation
+==========
+
+getemx accepts no options on the command line. Its arguments should
+consist simply of .emx files; the simplest way to invoke it is::
+
+   getemx *.emx
+
+where the .emx files are in the current directory.
+
+getemx will read a file in your home directory called ".emxdownloader"
+which can define options to control its behavior. Options may either
+be *boolean* or *string*; the values of boolean options must be one of
+"f", "t", "false", or "true" while string options may be any
+string. The syntax of the .emxdownloader file is very simple::
+
+   option = value
+
+Any amount of whitespace may occur before or after the "=". The
+following are boolean options:
+
+- **replace_underscores**: if true, underscores in the filename will
+    be replaced by spaces. True by default.
+- **replace_apostrophe_identity**: if true, the string "&#039;" in
+    filenames will be replaced by "'". True by default.
+- **get_art**: if true, cover art will be downloaded for each
+    album. True by default.
+
+Currently the only string options control the filenames of the
+downloaded files. There are two classes here: **dldir** specifies a
+directory *relative to which* further processing will take place,
+while **dlfmt** and **dlfmt_multidisc** specify how to process
+*individual files*. The latter two accept a number of replacement
+options:
+
+==============  ================================================
+Format string:  Replaced by:
+==============  ================================================
+``%(a)``            Artist name
+``%(A)``            Album name
+``%(n)``            Track number
+``%(t)``            Track name
+``%(D)``            Total number of discs in set
+``%(d)``            Number of present disc in set (e.g. 2 out of 4)
+``%(l)``            Label
+``%(e)``           File extension
+``%(g)``            Genre
+=============   ================================================
+
+The defaults for the string options are:
+
+- **dldir**: ``.``, that is, whatever directory getemx is run from
+- **dlfmt**: ``%(a)/%(A)/%(a) - %(A) - %(n) - %(t)``
+- **dlfmt_multidisc**: ``%(a)/%(A): %(D)/%(a) - %(A): %(D) - %(n) - %(t)``
+
+**dlfmt_multidisc** is used if a track is being downloaded that
+belongs to a set with more than one disc; otherwise, **dlfmt** is
+used. Note that at present the default for dlfmt_multidisc will
+probably do the wrong thing on OS X. Note also that neither of the
+default values ends with %(e): the file extension is supplied
+automatically if it is not explicitly specified.
+
+A ~/.emxdownloader file that set every option to its default value
+could look like this::
+
+    get_art = t
+    replace_underscores = t
+    replace_apostrophe_identity = t
+    dldir = .
+    dlfmt = %(a)/%(A)/%(a) - %(A) - %(n) - %(t)
+    dlfmt_multidisc = %(a)/%(A): %(D)/%(a) - %(A) - %(n) - %(t)
+
+"Could" because one could also write "true" out in full for "t".
