@@ -22,7 +22,7 @@ Invocation
 getemx accepts no options on the command line. Its arguments should
 consist simply of .emx files; the simplest way to invoke it is::
 
-   getemx *.emx
+   $ getemx *.emx
 
 where the .emx files are in the current directory.
 
@@ -37,12 +37,9 @@ string. The syntax of the .emxdownloader file is very simple::
 Any amount of whitespace may occur before or after the "=". The
 following are boolean options:
 
-- **replace_underscores**: if true, underscores in the filename will
-    be replaced by spaces. True by default.
-- **replace_apostrophe_identity**: if true, the string "&#039;" in
-    filenames will be replaced by "'". True by default.
-- **get_art**: if true, cover art will be downloaded for each
-    album. True by default.
+- **replace_underscores**: if true, underscores in the filename will be replaced by spaces. True by default.
+- **replace_apostrophe_identity**: if true, the string "&#039;" in filenames will be replaced by "'". True by default.
+- **get_art**: if true, cover art will be downloaded for each album. True by default.
 
 Currently the only string options control the filenames of the
 downloaded files. There are two classes here: **dldir** specifies a
@@ -51,9 +48,9 @@ while **dlfmt** and **dlfmt_multidisc** specify how to process
 *individual files*. The latter two accept a number of replacement
 options:
 
-==============  ============
-Format string:  Replaced by:
-==============  ============
+=============   ============
+Format string   Replaced by
+=============   ============
 ``%(a)``        Artist name
 ``%(A)``        Album name
 ``%(n)``        Track number
@@ -63,7 +60,7 @@ Format string:  Replaced by:
 ``%(l)``        Label
 ``%(e)``        File extension
 ``%(g)``        Genre
-=============   ============
+============    ============
 
 The defaults for the string options are:
 
@@ -75,7 +72,7 @@ The defaults for the string options are:
 belongs to a set with more than one disc; otherwise, **dlfmt** is
 used. Note that at present the default for dlfmt_multidisc will
 probably do the wrong thing on OS X. Note also that neither of the
-default values ends with %(e): the file extension is supplied
+default values ends with ``%(e)``: the file extension is supplied
 automatically if it is not explicitly specified.
 
 A ~/.emxdownloader file that set every option to its default value
