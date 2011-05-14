@@ -44,7 +44,7 @@ subfromstring s = go s []
             (run,rest) = break (=='%') s
 
 (Right default_dlf) = subfromstring "%(a)/%(A)/%(a) - %(A) - %(n) - %(t)"
-(Right default_dlfm) = subfromstring "%(a)/%(A): %(D)/%(a) - %(A): %(D) - %(n) - %(t)"
+(Right default_dlfm) = subfromstring "%(a)/%(A): %(d)/%(a) - %(A): %(d) - %(n) - %(t)"
 
 strip rem = reverse.snd.span (`elem` rem).reverse.snd.span (`elem` rem)
 split s splite = (before, after)
