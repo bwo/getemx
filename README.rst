@@ -60,13 +60,14 @@ options:
 ``%(l)``           Label
 ``%(e)``           File extension
 ``%(g)``           Genre
+``%%``             ``%``
 ================== ================
 
 The defaults for the string options are:
 
 - **dldir**: ``.``
 - **dlfmt**: ``%(a)/%(A)/%(a) - %(A) - %(n) - %(t)``
-- **dlfmt_multidisc**: ``%(a)/%(A): %(D)/%(a) - %(A): %(D) - %(n) - %(t)``
+- **dlfmt_multidisc**: ``%(a)/%(A): %(d)/%(a) - %(A): %(d) - %(n) - %(t)``
 
 **dlfmt_multidisc** is used if a track is being downloaded that
 belongs to a set with more than one disc; otherwise, **dlfmt** is
@@ -83,6 +84,6 @@ could look like this::
     replace_apostrophe_identity = t
     dldir = .
     dlfmt = %(a)/%(A)/%(a) - %(A) - %(n) - %(t)
-    dlfmt_multidisc = %(a)/%(A): %(D)/%(a) - %(A): %(D) - %(n) - %(t)
+    dlfmt_multidisc = %(a)/%(A): %(d)/%(a) - %(A): %(d) - %(n) - %(t)
 
 "Could" because one could also write "true" out in full for "t".
