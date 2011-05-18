@@ -37,7 +37,7 @@ Maintainer:          wolfson@gmail.com
 Category:            Web
 
 Build-type:          Simple
-Description: Read emusic's .emxx files and download media
+Description: Read emusic's .emx files and download media
 -- Extra files to be distributed with the package, such as examples or
 -- a README.
 Extra-source-files:  README.rst
